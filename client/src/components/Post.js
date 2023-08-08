@@ -57,7 +57,7 @@ function Post({ post, type }) {
           <Card.Img
             variant="bottom"
             src={`${process.env.REACT_APP_IMAGEKIT_URLENDPOINT}/image${type !== "main" ? type : ""
-              }-${post.noteId}.jpg`}
+              }-${post.noteId}.jpg${type == "anime" ? "" : `?updatedAt=${type == "main" ? "1691409055636" : "1691484277084"}`}`}
             onError={(e) => e.target.remove()}
             alt={`Image for post ${post.noteName}`}
             className="img-fluid gradient-bg m-1"
