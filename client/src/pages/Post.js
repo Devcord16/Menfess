@@ -12,7 +12,7 @@ const ColoredLine = ({ color }) => (
       background: "white",
       color: "white",
       borderColor: "white",
-      height: "3px",
+      height: "1px",
       width: "100%", // Set the width to 100 viewport width
     }}
   />
@@ -92,9 +92,10 @@ function Post({ type }) {
       <PostCard post={post} type={type} />
       <div className="d-flex justify-content-center align-items-center">
         <Card
-          className=" bg-dark text-white border-0"
+          className=" bg-transparent text-white border-0"
           style={{ width: "500px", objectFit: "contain" }}>
-          <Card.Body>
+          
+
             <div id="comments">
               <h1 className="m-1">Komentar</h1>
               <Comments comments={post.comment} />
@@ -131,7 +132,7 @@ function Post({ type }) {
                 </Card.Body>
               </Card>
             </Form>
-          </Card.Body>
+
         </Card>
       </div>
     </>
