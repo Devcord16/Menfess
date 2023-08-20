@@ -57,6 +57,10 @@ function Navbar({ handleShow }) {
           <Nav.Link className="m-1 text-light" as={NavLink} to="/anime">
             Anime
           </Nav.Link>
+          <Nav.Link className="m-1 text-light" as={NavLink} to="/login">
+            Login(btw nanti bisa kan dibikin kalau udah login diganti jadi
+            profile?)
+          </Nav.Link>
         </Nav>
         <Form inline="true" onSubmit={handleSubmit} className="m-1 text-light">
           <Form.Control
