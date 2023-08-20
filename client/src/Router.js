@@ -12,6 +12,8 @@ import Posts from "./pages/Posts";
 import LoginPage from "./pages/Login";
 import RegisterPage from "./pages/SignUp";
 
+import UserPage from "./pages/User";
+
 const createPostsLoader = (type) => () =>
   axios.get(`${process.env.REACT_APP_API_BASE_URL}/${type}/posts?from=0&to=20`);
 
@@ -40,6 +42,13 @@ const router = createBrowserRouter(
     <Route element={<App />} errorElement={<ErrorBoundary />}>
       <Route path="login" element={<LoginPage />} />
       <Route path="register" element={<RegisterPage />} />
+      <Route
+        path="user"
+        index
+        shouldRevalidate={shouldRevalidate}
+        loader={createPostsLoader("main")}
+        element={<UserPage type="main" />}
+      />
 
       <Route
         index

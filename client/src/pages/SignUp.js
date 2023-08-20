@@ -11,7 +11,7 @@ function SignUpForm() {
     fullname: "",
     email: "",
   });
-  const { username, password, email, fullname } = formData;
+  const { username, password, email, fullname, about } = formData;
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -72,6 +72,16 @@ function SignUpForm() {
               value={username}
               onChange={handleInputChange}
               placeholder="Username"
+            />
+          </Form.Group>
+
+          <Form.Group controlId="formBasicPassword" className="mb-3">
+            <Form.Label>About</Form.Label>
+            <Form.Control
+              name="about"
+              value={about}
+              onChange={handleInputChange}
+              placeholder="About Me"
             />
           </Form.Group>
 
