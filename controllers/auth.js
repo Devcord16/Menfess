@@ -105,13 +105,20 @@ const authCtrl = {
       return res.status(500).json({ msg: err.message })
     }
   },
-  google: async () => {
+  google: async (req, res) => {
+    try {
+      if (req.user) {
+      }
 
+      //res.redirect("/")
+    } catch (err) {
+      return res.status(500).json({ msg: err.message })
+    }
   }
 }
 
 const createAccessToken = (payload) => {
-  return jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "1d" })
+  return jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "15min" })
 }
 
 const createRefreshToken = (payload) => {

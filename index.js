@@ -3,6 +3,8 @@
  * Halo, gw Min Akhilkariim Ziddan/Gorengan Hunter. Commit dikit ga ngaruh
  */
 
+require("dotenv").config();
+
 // Pake nanya, import package dulu lah
 const express = require("express");
 const { createServer } = require("http");
@@ -11,8 +13,8 @@ const cookieParser = require("cookie-parser");
 const cors = require("cors");
 const mongoose = require("mongoose");
 const path = require("path")
-
-require("dotenv").config();
+const passport = require('passport')
+const passportSetup = require('./config/passport.js')
 
 // Import router
 const apiRouter = require("./routes/api.js")
@@ -31,7 +33,8 @@ app.use(cookieParser());
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(express.static(path.resolve(__dirname, "client/build")))
+// app.use(express.static(path.resolve(__dirname, "client/build")))
+app.use(passport.initialize())
 
 // Cuman naruh socket.io di req biar bisa diakses di router
 app.use((req, res, next) => {
@@ -42,11 +45,14 @@ app.use((req, res, next) => {
 // Pake router nya
 app.use("/api", apiRouter)
 
-app.get('*', (req, res) => {
-  res.sendFile(path.resolve(__dirname, 'client/build', 'index.html'));
-});
+app.get("/api/refresh_token", (req, res) => {
+  res.send(req.cookies.refreshtoken)
+})
+// app.get('*', (req, res) => {
+//   res.sendFile(path.resolve(__dirname, 'client/build', 'index.html'));
+// });
 
-const port = 5000;
+const port = 3000;
 
 // Jalanin Backend nya. Frontend di folder terpisah
 server.listen(port, async () => {
