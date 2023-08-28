@@ -45,9 +45,9 @@ app.use((req, res, next) => {
 // Pake router nya
 app.use("/api", apiRouter)
 
-app.get("/api/refresh_token", (req, res) => {
-  res.send(req.cookies.refreshtoken)
-})
+// app.get("/api/refresh_token", (req, res) => {
+//   res.send(req.cookies.refreshtoken)
+// })
 // app.get('*', (req, res) => {
 //   res.sendFile(path.resolve(__dirname, 'client/build', 'index.html'));
 // });
