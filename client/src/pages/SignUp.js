@@ -4,7 +4,14 @@ import { Button, Form } from "react-bootstrap";
 import { Helmet } from "react-helmet";
 import ReCAPTCHA from "react-google-recaptcha"; // Import reCAPTCHA
 
-function SignUpForm() {
+import { connect } from "react-redux";
+import { signUp } from "./authActions";
+
+const mapDispatchToProps = {
+  signUp,
+};
+
+function SignUpForm(props) {
   const [formData, setFormData] = useState({
     username: "",
     password: "",
@@ -20,8 +27,8 @@ function SignUpForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    // Login Handle
+    // Panggil fungsi signUp dari this.props
+    props.signUp(fullname, username, email, password);
   };
 
   return (
@@ -94,7 +101,7 @@ function SignUpForm() {
             />
           </Form.Group>
 
-          <Button variant="primary" type="submit" block>
+          <Button variant="primary" type="submit">
             Sign up
           </Button>
 
@@ -109,4 +116,4 @@ function SignUpForm() {
   );
 }
 
-export default SignUpForm;
+export default connect(null, mapDispatchToProps)(SignUpForm);

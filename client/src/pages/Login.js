@@ -4,7 +4,14 @@ import { Button, Form } from "react-bootstrap";
 import { Helmet } from "react-helmet";
 import ReCAPTCHA from "react-google-recaptcha"; // Import reCAPTCHA
 
-function LoginForm() {
+import { connect } from "react-redux";
+import { login } from "./authActions";
+
+const mapDispatchToProps = {
+  login,
+};
+
+function LoginForm(props) {
   const [formData, setFormData] = useState({ email: "", password: "" });
   const { email, password } = formData;
 
@@ -15,8 +22,7 @@ function LoginForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    // Login Handle
+    props.login(email, password);
   };
 
   return (
@@ -74,4 +80,4 @@ function LoginForm() {
   );
 }
 
-export default LoginForm;
+export default connect(null, mapDispatchToProps)(LoginForm);

@@ -32,6 +32,16 @@ const createPostLoader =
   ({ params: { id } }) =>
     axios.get(`${process.env.REACT_APP_API_BASE_URL}/${type}/post/${id}`);
 
+const createLoginLoader =
+  (type) =>
+  ({ params: { id } }) =>
+    axios.get(`${process.env.REACT_APP_API_BASE_URL}/${type}/post/${id}`);
+
+const createSignUpLoader =
+  (type) =>
+  ({ params: { id } }) =>
+    axios.get(`${process.env.REACT_APP_API_BASE_URL}/${type}/post/${id}`);
+
 const shouldRevalidate = ({
   currentParams: { id: currentId = 1 },
   nextParams: { id: nextId = 1 },

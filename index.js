@@ -1,5 +1,5 @@
 /*
- * Hello, My name is M.Fathin Halim/Doma Tomoharu. This is code for my Application called "Menfess"! :D 
+ * Hello, My name is M.Fathin Halim/Doma Tomoharu. This is code for my Application called "Menfess"! :D
  * Halo, gw Min Akhilkariim Ziddan/Gorengan Hunter. Commit dikit ga ngaruh
  */
 
@@ -12,20 +12,20 @@ const { Server } = require("socket.io");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
 const mongoose = require("mongoose");
-const path = require("path")
-const passport = require('passport')
-const passportSetup = require('./config/passport.js')
+const path = require("path");
+const passport = require("passport");
+const passportSetup = require("./config/passport.js");
 
 // Import router
-const apiRouter = require("./routes/api.js")
+const apiRouter = require("./routes/api.js");
 
 // Bikin app nya
 const app = express();
 const server = createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: "http://localhost:3000"
-  }
+    origin: "http://localhost:3000",
+  },
 });
 
 // Setup dikit
@@ -34,16 +34,16 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 // app.use(express.static(path.resolve(__dirname, "client/build")))
-app.use(passport.initialize())
+app.use(passport.initialize());
 
 // Cuman naruh socket.io di req biar bisa diakses di router
 app.use((req, res, next) => {
-  req.io = io
-  next()
-})
+  req.io = io;
+  next();
+});
 
 // Pake router nya
-app.use("/api", apiRouter)
+app.use("/api", apiRouter);
 
 // app.get("/api/refresh_token", (req, res) => {
 //   res.send(req.cookies.refreshtoken)
@@ -52,7 +52,7 @@ app.use("/api", apiRouter)
 //   res.sendFile(path.resolve(__dirname, 'client/build', 'index.html'));
 // });
 
-const port = 3000;
+const port = 5000;
 
 // Jalanin Backend nya. Frontend di folder terpisah
 server.listen(port, async () => {
