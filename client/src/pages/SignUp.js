@@ -5,20 +5,21 @@ import { Helmet } from "react-helmet";
 import ReCAPTCHA from "react-google-recaptcha"; // Import reCAPTCHA
 
 import { connect } from "react-redux";
-import { signUp } from "./authActions";
+import { signUp, googleSignIn } from "./authActions";
 
 const mapDispatchToProps = {
   signUp,
+  googleSignIn, // Tambahkan googleSignIn ke mapDispatchToProps
 };
 
 function SignUpForm(props) {
   const [formData, setFormData] = useState({
-    username: "",
-    password: "",
     fullname: "",
+    username: "",
     email: "",
+    password: "",
   });
-  const { username, password, email, fullname, about } = formData;
+  const { fullname, username, email, password } = formData;
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -29,6 +30,10 @@ function SignUpForm(props) {
     e.preventDefault();
     // Panggil fungsi signUp dari this.props
     props.signUp(fullname, username, email, password);
+  };
+  const handleGoogleSignIn = () => {
+    // Panggil tindakan googleSignIn dari props saat tombol ditekan
+    props.googleSignIn();
   };
 
   return (
@@ -82,16 +87,6 @@ function SignUpForm(props) {
             />
           </Form.Group>
 
-          <Form.Group controlId="formBasicPassword" className="mb-3">
-            <Form.Label>About</Form.Label>
-            <Form.Control
-              name="about"
-              value={about}
-              onChange={handleInputChange}
-              placeholder="About Me"
-            />
-          </Form.Group>
-
           <Form.Group className="mb-3">
             <ReCAPTCHA
               sitekey="YOUR_RECAPTCHA_SITE_KEY"
@@ -101,9 +96,17 @@ function SignUpForm(props) {
             />
           </Form.Group>
 
-          <Button variant="primary" type="submit">
+          <Button
+            variant="outline-primary"
+            className="btn text-white btn-outline-primary m-1"
+            type="submit">
             Sign up
           </Button>
+          <a
+            href="/api/auth/google"
+            className="btn text-white btn-outline-secondary m-1">
+            Login with Google
+          </a>
 
           <div className="text-center mt-3">
             <p>

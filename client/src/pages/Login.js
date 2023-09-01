@@ -69,6 +69,12 @@ function LoginForm(props) {
             Sign in
           </Button>
 
+          <a
+            href="/api/auth/google"
+            className="btn text-white btn-outline-secondary m-1">
+            Login with Google
+          </a>
+
           <div className="text-center mt-3">
             <p>
               Not a member? <a href="/register">Register</a>

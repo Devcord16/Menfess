@@ -39,3 +39,17 @@ export const signUp =
       dispatch({ type: "SIGNUP_FAILURE", payload: error });
     }
   };
+
+export const googleSignIn = () => async (dispatch) => {
+  try {
+    const response = await axios.post(
+      `${process.env.REACT_APP_API_BASE_URL}/api/google`
+    );
+
+    // Jika login berhasil, dispatch aksi yang sesuai, misalnya LOGIN_SUCCESS dengan payload data pengguna.
+    dispatch({ type: "GOOGLE_SUCCESS", payload: response.data });
+  } catch (error) {
+    // Jika login gagal, dispatch aksi yang sesuai, misalnya LOGIN_FAILURE dengan payload error.
+    dispatch({ type: "GOOGLE_FAILURE", payload: error });
+  }
+};
