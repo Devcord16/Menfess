@@ -3,7 +3,7 @@ const bcrypt = require("bcryptjs")
 const jwt = require("jsonwebtoken")
 
 const authCtrl = {
-  register: async (req, res) => {
+  async register(req, res) {
     try {
       let { fullname, username, email, password } = req.body
       username = username.toLowerCase().replace(/ /g, "")
@@ -41,7 +41,7 @@ const authCtrl = {
       return res.status(500).json({ msg: err.message })
     }
   },
-  login: async (req, res) => {
+  async login(req, res) {
     try {
       const { email, password } = req.body
 
@@ -73,7 +73,7 @@ const authCtrl = {
       return res.status(500).json({ msg: err.message })
     }
   },
-  logout: async (req, res) => {
+  async logout(req, res) {
     try {
       res.clearCookie("refreshtoken", { path: "/api/refresh_token" })
       return res.json({ msg: "Logged out!" })
@@ -81,7 +81,7 @@ const authCtrl = {
       return res.status(500).json({ msg: err.message })
     }
   },
-  generateAccessToken: async (req, res) => {
+  async generateAccessToken(req, res) {
     try {
       const rf_token = req.cookies.refreshtoken
       if (!rf_token) return res.status(400).json({ msg: "Please login now." })
@@ -105,14 +105,37 @@ const authCtrl = {
       return res.status(500).json({ msg: err.message })
     }
   },
-  google: async (req, res) => {
+  async google(req, accessToken, refreshToken, profile, done) {
     try {
-      if (req.user) {
+      let user = await userModel.findOne({ email: profile.emails[0].value })
+
+      if (!user) {
+        const username = await createUsername(profile.emails[0].value.split("@")[0])
+        user = await userModel.create({
+          fullname: profile.displayName,
+          username,
+          email: profile.emails[0].value,
+          googleId: profile.id,
+          avatar: profile.photos[0].value
+        })
       }
 
-      //res.redirect("/")
-    } catch (err) {
-      return res.status(500).json({ msg: err.message })
+      if (!user.googleId) done(null, false, { message: "Email sudah digunakan di metode lain" })
+
+      const refresh_token = createRefreshToken({ id: user._id })
+
+      req.res.cookie("refreshtoken", refresh_token, {
+        httpOnly: true,
+        path: "/api/refresh_token",
+        maxAge: 30 * 24 * 60 * 60 * 1000, // 30days
+      })
+
+      console.log(user, refresh_token)
+
+      done(null, user)
+    } catch (e) {
+      console.error(e)
+      done(e, false)
     }
   }
 }
@@ -123,6 +146,15 @@ const createAccessToken = (payload) => {
 
 const createRefreshToken = (payload) => {
   return jwt.sign(payload, process.env.REFRESH_TOKEN_SECRET, { expiresIn: "30d" })
+}
+
+const createUsername = async (username) => {
+  let user = await userModel.findOne({ username })
+  if(user) {
+    const newUsername = await createUsername(username + Math.ceil(Math.random() * 10000))
+    return newUsername
+  }
+  return username
 }
 
 module.exports = authCtrl
