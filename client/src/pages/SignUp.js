@@ -1,15 +1,12 @@
 import React, { useState } from "react";
 import { Button, Form } from "react-bootstrap";
-
 import { Helmet } from "react-helmet";
-import ReCAPTCHA from "react-google-recaptcha"; // Import reCAPTCHA
-
+import ReCAPTCHA from "react-google-recaptcha";
 import { connect } from "react-redux";
-import { signUp, googleSignIn } from "./authActions";
+import { signUp, setAccessToken } from "./authActions";
 
 const mapDispatchToProps = {
   signUp,
-  googleSignIn, // Tambahkan googleSignIn ke mapDispatchToProps
 };
 
 function SignUpForm(props) {
@@ -28,13 +25,18 @@ function SignUpForm(props) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // Panggil fungsi signUp dari this.props
-    props.signUp(fullname, username, email, password);
+    try {
+      await props.signUp(fullname, username, email, password);
+
+      setAccessToken();
+      console.log("Sign UP");
+    } catch (error) {
+      console.error("Error during signUp:", error);
+    }
   };
-  const handleGoogleSignIn = () => {
-    // Panggil tindakan googleSignIn dari props saat tombol ditekan
-    props.googleSignIn();
-  };
+  setInterval(function () {
+    setAccessToken();
+  }, 300000);
 
   return (
     <>
@@ -102,9 +104,11 @@ function SignUpForm(props) {
             type="submit">
             Sign up
           </Button>
+
           <a
             href="/api/auth/google"
-            className="btn text-white btn-outline-secondary m-1">
+            className="btn text-white btn-outline-secondary m-1"
+            onClick={setAccessToken()}>
             Login with Google
           </a>
 

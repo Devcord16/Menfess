@@ -33,7 +33,7 @@ app.use(cookieParser());
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-// app.use(express.static(path.resolve(__dirname, "client/build")))
+app.use(express.static(path.resolve(__dirname, "client/build")));
 app.use(passport.initialize());
 
 // Cuman naruh socket.io di req biar bisa diakses di router
@@ -48,9 +48,9 @@ app.use("/api", apiRouter);
 // app.get("/api/refresh_token", (req, res) => {
 //   res.send(req.cookies.refreshtoken)
 // })
-// app.get('*', (req, res) => {
-//   res.sendFile(path.resolve(__dirname, 'client/build', 'index.html'));
-// });
+app.get("*", (req, res) => {
+  res.sendFile(path.resolve(__dirname, "client/build", "index.html"));
+});
 
 const port = 5000;
 
