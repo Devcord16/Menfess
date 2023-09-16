@@ -1,12 +1,21 @@
 const { Router } = require("express")
-const userCtrl = require("../../controllers/user")
+const postCtrl = require("../../controllers/post")
 
 const auth = require("../../middleware/auth")
+const multer = require("../../tools/multer")
 
 const app = Router()
 
-app.get("/user/:id", userCtrl.getUser)
+app.route("/posts")
+  .post(auth, multer.array("media", 10), postCtrl.createPost)
+  .get(auth, postCtrl.getPosts)
 
-app.post("/follow/:id", auth, userCtrl.follow)
+app.get("/post/:id", postCtrl.getPost)
+
+app.post("/like/:id", auth, postCtrl.likePost)
+
+app.get("/user_posts/:id", postCtrl.getUserPosts)
+
+app.post("/comment/:id", auth, postCtrl.createComment)
 
 module.exports = app
