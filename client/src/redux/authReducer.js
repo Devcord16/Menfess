@@ -2,6 +2,7 @@
 const initialState = {
   user: null, // Ini akan menyimpan data pengguna setelah login berhasil
   error: null, // Ini akan menyimpan pesan kesalahan jika login gagal
+  accessToken: null, //ini akan menyimpan aksesToken
 };
 
 const authReducer = (state = initialState, action) => {

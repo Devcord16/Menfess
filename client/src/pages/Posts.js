@@ -10,15 +10,19 @@ function Posts({ type }) {
   const { data } = useLoaderData();
   const [posts, setPosts] = useState(data.posts);
   const [loading, setLoading] = useState(false);
-  const [tamat, setTamat] = useState(false)
+  const [tamat, setTamat] = useState(false);
 
   const handleMentok = async () => {
     if (loading || tamat) return;
     setLoading(true);
     try {
-      const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/${type}/posts?from=${posts.length}&to=${posts.length + 10}`);
+      const response = await axios.get(
+        `${process.env.REACT_APP_API_BASE_URL}/${type}/posts?from=${
+          posts.length
+        }&to=${posts.length + 10}`
+      );
       console.log(response); // Check the API response
-      if (response.data.posts.length === 0) setTamat(true)
+      if (response.data.posts.length === 0) setTamat(true);
       setPosts((prevPosts) => [...prevPosts, ...response.data.posts]);
       setLoading(false);
     } catch (e) {
@@ -30,7 +34,8 @@ function Posts({ type }) {
   const handleScroll = () => {
     const sentinel = document.querySelector("#sentinel");
     if (sentinel && !loading) {
-      const distanceFromBottom = sentinel.getBoundingClientRect().bottom - window.innerHeight;
+      const distanceFromBottom =
+        sentinel.getBoundingClientRect().bottom - window.innerHeight;
       if (distanceFromBottom < 1) {
         handleMentok();
       }
@@ -63,7 +68,7 @@ function Posts({ type }) {
       socket.off("newPost", handleNewPost);
       socket.off("addLike", handleAddLike);
       document.removeEventListener("scroll", handleScroll);
-    }
+    };
   }, [posts, loading, type]);
 
   useEffect(() => {
@@ -71,11 +76,13 @@ function Posts({ type }) {
     window.scrollTo({ top: 0 });
   }, [data]);
 
-
   return (
     <>
       <Helmet>
-        <title>{`Menfess | ${[type.charAt(0).toUpperCase(), ...type.slice(1)].join("")}`}</title>
+        <title>{`Menfess | ${[
+          type.charAt(0).toUpperCase(),
+          ...type.slice(1),
+        ].join("")}`}</title>
       </Helmet>
 
       <div id="posts">
@@ -87,7 +94,7 @@ function Posts({ type }) {
         <p>{loading ? "Loading..." : tamat ? "Dah mentok bang" : ""}</p>
       </div>
     </>
-  )
+  );
 }
 
 export default Posts;

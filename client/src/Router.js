@@ -14,8 +14,15 @@ import RegisterPage from "./pages/SignUp";
 
 import UserPage from "./pages/User";
 
+import { getAccessToken } from "./pages/authUtils";
+
 const createPostsLoader = (type) => () =>
-  axios.get(`${process.env.REACT_APP_API_BASE_URL}/${type}/posts?from=0&to=20`);
+  axios.get(
+    `${process.env.REACT_APP_API_BASE_URL}/${type}/posts?from=0&to=20`,
+    {
+      headers: { Authorization: getAccessToken() },
+    }
+  );
 
 const createSearchLoader =
   (type) =>
