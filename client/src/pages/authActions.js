@@ -42,8 +42,8 @@ export const signUp =
 
 export const googleSignIn = () => async (dispatch) => {
   try {
-    const response = await axios.post(
-      `${process.env.REACT_APP_API_BASE_URL}/api/google`
+    const response = await axios.get(
+      `${process.env.REACT_APP_API_BASE_URL}/api/auth/google`
     );
 
     // Jika login berhasil, dispatch aksi yang sesuai, misalnya LOGIN_SUCCESS dengan payload data pengguna.
@@ -51,5 +51,18 @@ export const googleSignIn = () => async (dispatch) => {
   } catch (error) {
     // Jika login gagal, dispatch aksi yang sesuai, misalnya LOGIN_FAILURE dengan payload error.
     dispatch({ type: "GOOGLE_FAILURE", payload: error });
+  }
+};
+export const setAccessToken = () => async (dispatch) => {
+  try {
+    const response = await axios.get(
+      `${process.env.REACT_APP_API_BASE_URL}/api/refresh_token`
+    );
+
+    // Jika berhasil, dispatch action dengan payload data token.
+    dispatch({ type: "SET_TOKEN", payload: response.data });
+  } catch (error) {
+    // Jika gagal, dispatch action dengan payload error.
+    dispatch({ type: "SET_TOKEN_ERROR", payload: error });
   }
 };

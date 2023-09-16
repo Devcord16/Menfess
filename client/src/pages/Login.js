@@ -5,7 +5,7 @@ import { Helmet } from "react-helmet";
 import ReCAPTCHA from "react-google-recaptcha"; // Import reCAPTCHA
 
 import { connect } from "react-redux";
-import { login } from "./authActions";
+import { login, setAccessToken } from "./authActions";
 
 const mapDispatchToProps = {
   login,
@@ -71,7 +71,8 @@ function LoginForm(props) {
 
           <a
             href="/api/auth/google"
-            className="btn text-white btn-outline-secondary m-1">
+            className="btn text-white btn-outline-secondary m-1"
+            onClick={setAccessToken()}>
             Login with Google
           </a>
 
