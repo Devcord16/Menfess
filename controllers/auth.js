@@ -1,12 +1,17 @@
 const userModel = require("../models/user")
 const bcrypt = require("bcryptjs")
 const jwt = require("jsonwebtoken")
+const axios = require("axios")
 
 const authCtrl = {
   async register(req, res) {
     try {
-      let { fullname, username, email, password } = req.body
+      let { fullname, username, email, password, token } = req.body
       username = username.toLowerCase().replace(/ /g, "")
+
+      const response = await axios.post(`https://www.google.com/recaptcha/api/siteverify?secret=${process.env.GOOGLE_RECAPTCHA_SECRET_KEY}&response=${token}`);
+      
+      if (!response.data.success) return res.status(400).json({ msg: "Recaptcha tidak valid" })
 
       const user_name = await userModel.findOne({ username })
       if (user_name) return res.status(400).json({ msg: "Username sudah digunakan." })
@@ -38,6 +43,7 @@ const authCtrl = {
         },
       })
     } catch (err) {
+      console.log(err)
       return res.status(500).json({ msg: err.message })
     }
   },
@@ -70,6 +76,7 @@ const authCtrl = {
         },
       })
     } catch (err) {
+      console.log(err)
       return res.status(500).json({ msg: err.message })
     }
   },
@@ -78,6 +85,7 @@ const authCtrl = {
       res.clearCookie("refreshtoken", { path: "/api/refresh_token" })
       return res.json({ msg: "Logged out!" })
     } catch (err) {
+      console.log(err)
       return res.status(500).json({ msg: err.message })
     }
   },
@@ -102,6 +110,7 @@ const authCtrl = {
         }
       )
     } catch (err) {
+      console.log(err)
       return res.status(500).json({ msg: err.message })
     }
   },

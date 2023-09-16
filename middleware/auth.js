@@ -12,10 +12,10 @@ const auth = async (req, res, next) => {
 
         const user = await userModel.findOne({_id: decoded.id})
         
-        req.user = user
+        req.user = { ...user._doc, password: "" }
         next()
     } catch (err) {
-        return res.status(500).json({msg: err.message})
+        return res.status(500).json({ msg: err.message })
     }
 }
 

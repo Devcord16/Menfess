@@ -1,35 +1,12 @@
 const { Router } = require("express")
+const userCtrl = require("../../controllers/user")
 
-// Import controller
-const PostController = require("../../controllers/post")
+const auth = require("../../middleware/auth")
 
-// Import config an multer yg sgt sederhana. g percaya? liat sendiri isi file ny
-const multer = require("../../tools/multer")
+const app = Router()
 
-class PostRouter {
-  // Ini private field
-  #app
-  #controller
+app.get("/user/:id", userCtrl.getUser)
 
-  // Ini constructor
-  constructor(model, type) {
-    // Bikin router nya
-    this.#app = Router()
+app.post("/follow/:id", auth, userCtrl.follow)
 
-    // inisialisasi controller nya
-    this.#controller = new PostController(model, type)
-
-    // Ywdh sih tinggal diginiin doang
-    this.#app.get("/posts", (req, res) => this.#controller.getPosts(req, res))
-    this.#app.get("/post/:id", (req, res) => this.#controller.getPost(req, res))
-    this.#app.post("/post", multer.single("image"), (req, res) => this.#controller.createPost(req, res))
-    this.#app.post("/like/:id", (req, res) => this.#controller.like(req, res))
-    this.#app.post("/comment/:id", (req, res) => this.#controller.comment(req, res))
-  }
-
-  getRouter() {
-    return this.#app
-  }
-}
-
-module.exports = PostRouter
+module.exports = app

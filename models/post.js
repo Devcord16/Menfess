@@ -3,7 +3,7 @@ const { Schema, model } = require("mongoose");
 const postSchema = new Schema({
   user: { type: Schema.Types.ObjectId, ref: "user" },
   content: String,
-  images: [String],
+  media: [String],
   comments: [{
     user: { type: Schema.Types.ObjectId, ref: "user" },
     content: String
@@ -11,4 +11,4 @@ const postSchema = new Schema({
   likes: [{ type: Schema.Types.ObjectId, ref: "user" }]
 }, { timestamps: true });
 
-module.exports = model("main", postSchema)
+module.exports = model("post", postSchema)
